@@ -139,6 +139,7 @@ jobs:
       image: circleci/classic:latest
     steps:
       - checkout
+      - run: env
       - run: make test_integrations
 
   upload_coverage:
