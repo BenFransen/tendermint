@@ -134,6 +134,13 @@ jobs:
           name: Run tests
           command: bash test/persist/test_failure_indices.sh
 
+  test_p2p:
+    machine:
+      image: circleci/classic:latest
+    steps:
+      - checkout
+      - run: ls -lah .
+
   upload_coverage:
     <<: *defaults
     steps:
@@ -174,6 +181,7 @@ workflows:
       - test_persistence:
           requires:
             - setup_abci
+      - test_p2p
       - upload_coverage:
           requires:
             - test_cover
