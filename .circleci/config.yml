@@ -172,6 +172,11 @@ workflows:
       - test_app:
           requires:
             - setup_abci
+          filters:
+            branches:
+              only:
+                - develop
+                - master
       - upload_coverage:
           requires:
             - test_cover
