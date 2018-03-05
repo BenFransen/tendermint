@@ -8,22 +8,11 @@ defaults: &defaults
     GOBIN: /tmp/workspace/bin
   
 jobs:
-  setup_workspace:
+  setup_dependencies:
     <<: *defaults
     steps:
       - run: mkdir -p /tmp/workspace/bin
       - run: mkdir -p /tmp/workspace/profiles
-      - persist_to_workspace:
-          root: /tmp/workspace
-          paths:
-            - bin
-            - profiles
-
-  setup_dependencies:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
       - checkout
       - restore_cache:
           keys:
@@ -40,7 +29,8 @@ jobs:
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
-            - "bin/*"
+            - bin
+            - profiles
       - save_cache:
           key: v1-pkg-cache
           paths:
@@ -168,10 +158,7 @@ workflows:
   version: 2
   test-cover:
     jobs:
-      - setup_workspace
-      - setup_dependencies:
-          requires:
-            - setup_workspace
+      - setup_dependencies
       - setup_abci:
           requires:
             - setup_dependencies
