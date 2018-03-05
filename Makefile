@@ -4,7 +4,6 @@ GOTOOLS = \
 PACKAGES=$(shell go list ./... | grep -v '/vendor/')
 BUILD_TAGS?=tendermint
 BUILD_FLAGS = -ldflags "-X github.com/tendermint/tendermint/version.GitCommit=`git rev-parse --short=8 HEAD`"
-GOBIN ?= $(go env GOBIN)
 
 all: check build test install
 

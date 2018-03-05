@@ -135,6 +135,8 @@ jobs:
           command: bash test/persist/test_failure_indices.sh
 
   test_p2p:
+    environment:
+      GOBIN: /home/circleci/.go_workspace/bin
     machine:
       image: circleci/classic:latest
     steps:
