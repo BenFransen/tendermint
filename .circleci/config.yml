@@ -140,6 +140,7 @@ jobs:
     steps:
       - checkout
       - run: env
+      - run: go env
       - run: make test_integrations
 
   upload_coverage:
@@ -164,7 +165,7 @@ jobs:
 
 workflows:
   version: 2
-  test-cover:
+  test-suite:
     jobs:
       - setup_dependencies
       - setup_abci:
