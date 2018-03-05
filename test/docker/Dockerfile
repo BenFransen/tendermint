@@ -10,6 +10,7 @@ RUN apt-get update && \
 
 # Setup tendermint repo
 ENV REPO $GOPATH/src/github.com/tendermint/tendermint
+ENV GOBIN $GOPATH/bin
 WORKDIR $REPO
 
 # Install the vendored dependencies before copying code
@@ -17,7 +18,6 @@ WORKDIR $REPO
 ADD Gopkg.toml Gopkg.toml
 ADD Gopkg.lock Gopkg.lock
 ADD Makefile Makefile
-RUN env
 RUN make get_tools
 RUN make get_vendor_deps
 
