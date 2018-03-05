@@ -139,7 +139,7 @@ jobs:
       image: circleci/classic:latest
     steps:
       - checkout
-      - run: ls -lah .
+      - run: make integrations
 
   upload_coverage:
     <<: *defaults
