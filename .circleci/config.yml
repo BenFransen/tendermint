@@ -137,6 +137,7 @@ jobs:
   test_p2p:
     environment:
       GOBIN: /home/circleci/.go_workspace/bin
+      GOPATH: /home/circleci/.go_workspace
     machine:
       image: circleci/classic:latest
     steps:
