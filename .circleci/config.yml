@@ -142,8 +142,8 @@ jobs:
       image: circleci/classic:latest
     steps:
       - checkout
-      - run: env
-      - run: go env
+      - run: mkdir -p $GOPATH/src/github.com/tendermint
+      - run: ln -sf /home/circleci/project $GOPATH/src/github.com/tendermint/tendermint
       - run: make test_integrations
 
   upload_coverage:
