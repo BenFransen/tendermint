@@ -94,6 +94,20 @@ jobs:
           name: metalinter
           command: make metalinter
 
+  test_app:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - restore_cache:
+          key: v1-pkg-cache
+      - restore_cache:
+          key: v1-tree-{{ .Environment.CIRCLE_SHA1 }}
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends bsdmainutils
+      - run:
+          name: Run tests
+          command: bash test/app/test.sh
+
   test_cover:
     <<: *defaults
     parallelism: 4
@@ -105,7 +119,7 @@ jobs:
       - restore_cache:
           key: v1-tree-{{ .Environment.CIRCLE_SHA1 }}
       - run:
-          name: tests
+          name: Run tests
           command: |
             for pkg in $(go list github.com/tendermint/tendermint/... | grep -v /vendor/ | circleci tests split --split-by=timings); do
               id=$(basename "$pkg")
@@ -117,7 +131,7 @@ jobs:
           paths:
             - "profiles/*"
 
-  test_app:
+  test_persistence:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -126,11 +140,9 @@ jobs:
           key: v1-pkg-cache
       - restore_cache:
           key: v1-tree-{{ .Environment.CIRCLE_SHA1 }}
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends bsdmainutils
-      - run: ls -lah /tmp/workspace/bin
       - run:
-          name: tests
-          command: bash test/app/test.sh
+          name: Run tests
+          command: bash test/persist/test_failure_indices.sh
 
   upload_coverage:
     <<: *defaults
@@ -172,11 +184,9 @@ workflows:
       - test_app:
           requires:
             - setup_abci
-          filters:
-            branches:
-              only:
-                - develop
-                - master
+      - test_persistence:
+          requires:
+            - setup_abci
       - upload_coverage:
           requires:
             - test_cover
