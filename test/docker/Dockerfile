@@ -17,6 +17,7 @@ WORKDIR $REPO
 ADD Gopkg.toml Gopkg.toml
 ADD Gopkg.lock Gopkg.lock
 ADD Makefile Makefile
+RUN env
 RUN make get_tools
 RUN make get_vendor_deps
 
